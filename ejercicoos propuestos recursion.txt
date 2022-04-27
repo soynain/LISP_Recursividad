@@ -1,0 +1,90 @@
+Recursión:
+2.1
+WHEN:
+(cond ((> 5 (+ 2 2)) (+ 3 3) (+ 4 3) )   )
+
+UNLESS:
+(cond ((not (> 5 (+ 2 2))) (+ 3 3) (+ 4 3) )   )
+
+IF:
+ (cond ((> 5 (+ 2 2)) (+ 3 3)) ((+ 4 3))  )
+
+OR:
+//TABLA DE VERDAD
+ (cond ((< 5 (+ 2 2))) ((= 3 (+ 2 2)) )  ) //0-0 FALSE (nil)
+(cond ((< 5 (+ 2 2))) ((= 3 (+ 2 1)) )  ) //0-1 TRUE
+(cond ((> 5 (+ 2 2))) ((= 3 (+ 2 2)) )  ) //1-0 TRUE
+ (cond ((> 5 (+ 2 2))) ((= 3 (+ 2 1)) )  ) //1-1 -TRUE 
+
+AND:
+//TABLA DE VERDAD
+(cond ( (> 5 (+ 2 2)) (= 3 (+ 2 1)) )  ) //1-1 TRUE
+(cond ( (> 5 (+ 2 2)) (= 3 (+ 2 2)) )  ) //1-0 FALSE
+ (cond ( (< 5 (+ 2 2)) (= 3 (+ 2 1)) )  ) //0-1 FALSE
+(cond ( (< 5 (+ 2 2)) (= 3 (+ 2 2)) )  ) //0-0 FALSE
+
+2.2
+Regula falsi en lisp
+Inciso a)
+(define (f x) (sub (mul x x) 3) ) //funcion del problema, se define antes de GAMMA-ELEMENTAL
+//después de definir f de x, se define ya el GAMMA-ELEMENTAL
+Inciso b)
+(define (GAMMA-ELEMENTAL z u, a b) (cond ( (>= 0(mul (f z) (f u))) (set 'a z)(set 'b u) (set 'c a) (dotimes (i 3) (set 'c  (div (sub (mul a (f b)) (mul b (f a)))  (sub (f b) (f a))))  (set 'aux (f c)) (println "a->    "a "             b->" b "                c->"c" iteracion: "(+ i 1))(cond  ((= 0 aux) break) )(cond( (< 0 (* (f c)(f a)))(set 'b c)) ((set 'a c)))))((println "MAL"))))
+
+
+2.3
+(define (prof-primero lista)(cond((atom? lista)(println "primer atomo ->" lista))((prof-primero (first lista)))))
+(prof-primero '(((A B)C)D))
+
+2.4
+Inciso a)
+(define (MI-NTHCDR numveces lista) (cond ((= numveces 0) lista)  ((MI-NTHCDR (dec numveces) (rest lista)))))
+(MI-NTHCDR 2 '(1 2 3 4))
+(MI-NTHCDR 2 '(1 2 (3 4)))
+Inciso b)
+(define (MI-LAST lista)(cond ((= 1 (length lista))(atom? lista)lista)((MI-LAST (rest lista)))))
+(MI-LAST '(1 2 3 4))
+(MI-LAST '(1 2 (3 4)))
+Inciso c)
+ (define (MI-NBUTLAST lista lonn)(cond((= lonn(- (length lista) 1)) (0 lonn lista)) ((MI-NBUTLAST lista (inc lonn)))))
+ (MI-NBUTLAST '(1 2 3 4))
+(MI-NBUTLAST '(1 2 (3 4)))
+
+2.5 
+(define(APAREA listUno listDos listRest)(cond((null? listUno) (null? listDos) listRest) ((null? listRest) (APAREA (rest listUno) (rest listDos)(cons(append (cons(first listUno)) (cons(first listDos))))))((APAREA (rest listUno) (rest listDos) (append listRest (cons(append (cons(first listUno)) (cons(first listDos)))))))))
+(APAREA '(DO RE MI) '(C D E))
+(APAREA '(A) '(X Y Z))
+
+2.6
+Inciso a)
+(define (INCISO-A lista simbolo setvalores) (println setvalores " iteracion" lista " "(rest lista)) (cond((empty? lista)(println " hecho "setvalores " "lista " "(rest lista)) ) (cond(empty?(rest lista))(println "hecho" setvalores)((cond((= (first lista) simbolo)(cond((null? setvalores)    (println "nulo set "(list(first(rest lista))))(INCISO-A (rest lista)simbolo(list (first (rest lista)))))((cond((=(first(rest lista))simbolo)(INCISO-A (rest lista)simbolo setvalores))((println "no nulo set "setvalores)(INCISO-A (rest lista)simbolo(append setvalores (list(first(rest lista)))))))) )   )  ((cond((null? setvalores)(println "no igual nul set "(list(first lista)))(INCISO-A (rest lista)simbolo (list(first lista))))( (println "nu igual no nul set: "(list(first lista)))  (INCISO-A (rest lista)simbolo(append setvalores (list(first lista)))))))   ) )  )) )
+(INCISO-A '(1 2 2 2 2 3 2 2 4 1 1 1 1 1 1 1 1 1 2 2 2 2 2 3 3) 1)
+(INCISO-A '(1 2 2 2 2 3 2 2 4 1 1 1 1 1 1 1 1 1 2 2 2 2 2 3 3) 2)
+Inciso b)
+(define (INCISO-B lista sv sn setfinal)(println "iteracion lista "lista " iteracion set "setfinal)(cond((empty? lista)(println "hecho "setfinal))((cond((=(first lista)sv) (cond((null? setfinal)(INCISO-B (rest lista)sv sn(list sn)))((INCISO-B (rest lista)sv sn (append setfinal (list sn) ))) ) )((cond((null? setfinal)(INCISO-B (rest lista)sv sn (list(first lista)))) ((INCISO-B (rest lista)sv sn (append setfinal (list(first lista))))) )) ))))
+(INCISO-B '(1 1 1 1) 1 3)
+(INCISO-B '(1 2 1 1) 1 3)
+(INCISO-B '(2 2 4 1) 1 3)
+Inciso d)
+(define (INCISO-D lista sv sn setfinal)(println "iteracion lista "lista " iteracion set "setfinal)(cond((empty? lista)(println "hecho "setfinal))((cond((list? (first lista)) (cond((= (length(first lista))1)(cond((=(first(first lista))sv)(cond((null? setfinal) (println "1")  (INCISO-D (rest lista) sv sn(list(list sn))))((println "2")(INCISO-D (rest lista) sv sn(append setfinal  (list(list sn)))))))((cond((null? setfinal)(println "3") (INCISO-D (rest lista) sv sn(list(list  (first(first lista)))))) ((println "4")(INCISO-D (rest lista) sv sn (append setfinal(list(list  (first(first lista)))))))))))((cond((=(first(first lista))sv)(cond((null? setfinal)(println "5") (INCISO-D (append(rest(first lista))(rest lista))sv sn(list(list sn))))((println "6")(INCISO-D (append(rest(first lista))(rest lista)) sv sn (append setfinal (list(list sn)))))))((cond((null? setfinal)(println "7")(INCISO-D (append(rest(first lista))(rest lista)) sv sn (cons (first(first lista)) )))((println "8")(INCISO-D (append(rest(first lista))(rest lista))sv sn (cons setfinal (first(first lista))) )))))) ))((cond((=(first lista)sv) (cond((null? setfinal)(println "9")(INCISO-D (rest lista)sv sn(list sn)))((println "10")(INCISO-D (rest lista)sv sn (append setfinal (list sn) ))) ) )((cond((null? setfinal)(println "11")(INCISO-B (rest lista)sv sn (list(first lista)))) ((println "12")(INCISO-D (rest lista)sv sn (append setfinal (list(first lista)))))))))))))
+(INCISO-D '((5(3(3)(3))) 2 5 1(3(3)) (3(3)(3))) 3 1)
+(INCISO-D '((5(2(2)(2))) 2 5 1(2(2))) 2 3)
+
+
+2.7
+Inciso a)
+(define (INCISO-A lista simbolo contador) (cond((empty? lista)(println  contador " hecho")) ((= (first lista) simbolo) (INCISO-A (rest lista) simbolo (inc contador)) ) ((INCISO-A (rest lista) simbolo contador))) )
+(INCISO-A '(1 2 1 4) 1)
+(INCISO-A '(1 2 3 4) 1)
+Inciso b)
+(define (INCISO-B lista simbolo contador)(println "iteracion "lista) (cond((empty? lista)(println  contador " hecho")) ((list? (first lista))(println "lita "(append (rest(first lista)) (rest lista))) (cond((=(first(first lista)) simbolo)(INCISO-B (append (rest(first lista)) (rest lista)) simbolo (inc contador)) )((INCISO-B (rest lista) simbolo contador))))((= (first lista) simbolo)(println "atom igual "(first lista)) (INCISO-B (rest lista) simbolo (inc contador)) ) ((INCISO-B (rest lista) simbolo contador)) ))
+
+(INCISO-B '(1 2 (1(1(1(1))))(1) 4) 1)
+(INCISO-B '(1 2 (1)(1) 4) 1)
+(INCISO-B '(1 2 (2) 4) 1)
+(INCISO-B '(1 2 (1) 4) 1)
+
+Inciso c)
+(define (INCISO-C lista setvalores)(cond((empty? lista)(println  setvalores " hecho"))((cond((null? setvalores)(INCISO-C (rest lista) (list(first lista)))) ((member(first lista)setvalores)  		(INCISO-C (rest lista)setvalores))((INCISO-C (rest lista)(append setvalores (list(first lista))))) ))))
+(INCISO-C '(1 3 2 1 4 1))
+(INCISO-C '(1 3 2 2 4 1 1 1 1 1 1 1 1 1 2 2 2 2 2))
